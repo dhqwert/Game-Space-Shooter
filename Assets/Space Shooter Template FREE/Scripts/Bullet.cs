@@ -4,12 +4,24 @@ using System.Collections;
 public class Bullet : MonoBehaviour
 {
     public float flySpeed = 10f;
+    public int damage = 1;
+    
     void Update()
+    {       
+        var newPosition = transform.position;
+        newPosition.y += Time.deltaTime * flySpeed;
+        transform.position = newPosition;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        transform.Translate(Vector3.up * flySpeed * Time.deltaTime);
+        var enemy = collision.GetComponent<EnemyHealth>();
         
-        // var newPosition = transform.position;
-        // newPosition.y += Time.deltaTime * flySpeed;
-        // transform.position = newPosition;
+        if (enemy != null)
+        {
+            enemy.TakeDamage(damage); 
+        }
+        
+        Destroy(gameObject); 
     }
 }
